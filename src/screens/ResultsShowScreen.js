@@ -1,6 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, Image, FlatList, StyleSheet} from 'react-native';
 import yelp from '../api/yelp';
+import ResultsList from '../components/ResultsList'
+
 const ResultsShowScreen = ({navigation})=>{
   const id = navigation.getParam('id');
   const [result, setResult] = useState(null);
@@ -9,9 +11,9 @@ const ResultsShowScreen = ({navigation})=>{
 
   const getResult = async (id)=>{
     try{
-      const response = await yelp.get('/${id}');
+      const response = await yelp.get(`/${id}`);
       setResult(response.data);
-    }
+    }//error_handling
 
     catch (e){
       console.log(e.response.data);
@@ -21,16 +23,18 @@ const ResultsShowScreen = ({navigation})=>{
   useEffect(()=>{
     getResult(id);
   }, []);
+
   console.log(result);
+
   if(!result){
     return null;
   }
 
   return (
-    <View>
-      <Text> {result.name}
+    <View style={{flex:1}}>
+      <Text style={styles.headerText}> {result.name}
       </Text>
-      <Flat
+      <FlatList
         data={result.photos}
         keyExtractor={(photo)=>{photo}}
         renderItem={({item}) => {
@@ -47,6 +51,9 @@ const styles = StyleSheet.create({
     height:200,
     width:300,
     marginVertical:10
+  },
+  headerText:{
+    fontWeight:'bold'
   }
 });
 

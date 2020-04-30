@@ -14,7 +14,7 @@ export default ()=>{
         location: 'san jose' // location to search for
       }
     });
-    setResults(response.data.businesses);
+    setResults(response.data.businesses); 
     }
 
     catch (err) {
